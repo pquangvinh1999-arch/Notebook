@@ -7,13 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
-    <!-- AI LIBRARIES -->
-    <script type="module">
-        import { AutoModel, AutoImageProcessor, RawImage, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
-        window.AutoModel = AutoModel; window.AutoImageProcessor = AutoImageProcessor;
-        window.RawImage = RawImage; window.env = env;
-    </script>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Inter:wght@300;400;500;600;700&display=swap');
         :root { --primary: #007bff; --cyan: #00f2ff; --bg: #f8fafc; }
@@ -34,9 +27,9 @@
         #lock-timer { position: absolute; top: 25px; left: 50%; transform: translateX(-50%); width: 200px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden; display: none; z-index: 35; }
         #lock-progress { width: 0%; height: 100%; background: var(--cyan); box-shadow: 0 0 15px var(--cyan); transition: width 2s linear; }
 
-        .btn-premium { background: linear-gradient(135deg, #0062ff, #00d4ff); color: white; transition: 0.4s; border: none; }
+        .btn-premium { background: linear-gradient(135deg, #0062ff, #00d4ff); color: white; transition: 0.4s; border: none; cursor: pointer; }
         .btn-premium:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(0, 98, 255, 0.4); }
-        .btn-tool { background: #000; color: var(--cyan); border: 1px solid var(--cyan); font-family: 'Orbitron'; font-size: 10px; transition: 0.3s; }
+        .btn-tool { background: #000; color: var(--cyan); border: 1px solid var(--cyan); font-family: 'Orbitron'; font-size: 10px; transition: 0.3s; cursor: pointer; }
         .btn-tool:hover { background: var(--cyan); color: #000; box-shadow: 0 0 20px var(--cyan); }
 
         #image-modal { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(255,255,255,0.96); backdrop-filter: blur(25px); align-items: center; justify-content: center; }
@@ -44,32 +37,31 @@
         .haptic-shake { animation: shake 0.25s ease-in-out; }
         @keyframes shake { 0%, 100% { transform: translate(0,0); } 25% { transform: translate(-5px, 5px); } 75% { transform: translate(5px, -5px); } }
 
-        /* LOADING BAR AI */
-        #main-loading-box { position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 9999; display: none; }
-        #main-loading-bar { height: 100%; background: var(--cyan); width: 0%; transition: width 0.3s; box-shadow: 0 0 10px var(--cyan); }
+        /* AI LOADING BAR */
+        #main-loading-box { position: fixed; top: 0; left: 0; width: 100%; height: 5px; z-index: 9999; display: none; background: rgba(0,0,0,0.1); }
+        #main-loading-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--cyan)); width: 0%; transition: width 0.3s; box-shadow: 0 0 15px var(--cyan); }
     </style>
 </head>
 <body class="p-4 md:p-10">
     <div id="main-loading-box"><div id="main-loading-bar"></div></div>
 
     <header class="max-w-6xl mx-auto mb-10 text-center relative">
-        <a href="https://pquangvinh1999-arch.github.io/vector/" class="absolute left-0 top-1/2 -translate-y-1/2 btn-tool px-4 py-2 rounded-full hidden md:block">
+        <button onclick="window.location.href='https://pquangvinh1999-arch.github.io/vector/'" class="absolute left-0 top-1/2 -translate-y-1/2 btn-tool px-5 py-2.5 rounded-full hidden md:block">
             <i class="fas fa-microchip mr-2"></i> TÁCH VECTOR
-        </a>
+        </button>
         <h1 class="tech-font text-4xl md:text-5xl font-black mb-2 text-slate-900 tracking-tighter italic uppercase">
-            Smart <span class="text-blue-600 font-black">AI</span> Checking
+            Smart <span class="text-blue-600">AI</span> Checking
         </h1>
         <p class="text-slate-400 tracking-[0.4em] uppercase text-[10px] font-bold">Advanced Inventory System • <span class="text-blue-600">By Vinh</span></p>
-        <a href="https://pquangvinh1999-arch.github.io/vector/" class="mt-4 inline-block btn-tool px-4 py-2 rounded-full md:hidden">TÁCH VECTOR</a>
+        <button onclick="window.location.href='https://pquangvinh1999-arch.github.io/vector/'" class="mt-4 inline-block btn-tool px-5 py-2.5 rounded-full md:hidden">TÁCH VECTOR</button>
     </header>
 
     <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <!-- LEFT COLUMN -->
         <div class="lg:col-span-5 space-y-8">
             <div class="glass-card p-6">
                 <div class="flex items-center justify-between mb-6 text-sm">
-                    <h2 class="font-black text-slate-800 tech-font uppercase italic text-[11px]"><i class="fas fa-satellite-dish mr-2 text-blue-600"></i> AI RADAR v4.1</h2>
-                    <span id="sys-status" class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-widest border border-blue-100 italic">SYSTEM STANDBY</span>
+                    <h2 class="font-black text-slate-800 tech-font uppercase italic text-[11px]"><i class="fas fa-satellite-dish mr-2 text-blue-600"></i> AI RADAR v4.5</h2>
+                    <span id="sys-status" class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-widest border border-blue-100">STANDBY</span>
                 </div>
                 
                 <div class="camera-viewport aspect-video flex items-center justify-center" id="cam-container">
@@ -90,8 +82,8 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mt-6">
-                    <button onclick="startCamera()" class="btn-premium py-4 rounded-2xl text-[11px] font-bold uppercase tracking-widest shadow-lg shadow-blue-200"><i class="fas fa-power-off mr-2 text-sm"></i> Kích hoạt Cam</button>
-                    <button id="scan-btn" onclick="runTargetScan()" class="bg-slate-900 text-white py-4 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-black transition shadow-xl"><i class="fas fa-atom mr-2 text-sm"></i> Tìm AI</button>
+                    <button onclick="window.startCamera()" class="btn-premium py-4 rounded-2xl text-[11px] font-bold uppercase tracking-widest"><i class="fas fa-power-off mr-2 text-sm"></i> Kích hoạt Cam</button>
+                    <button id="scan-btn" onclick="window.runTargetScan()" class="bg-slate-900 text-white py-4 rounded-2xl text-[11px] font-bold uppercase tracking-widest hover:bg-black transition shadow-xl"><i class="fas fa-atom mr-2 text-sm"></i> Tìm AI</button>
                 </div>
             </div>
 
@@ -105,14 +97,13 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN -->
         <div class="lg:col-span-7 space-y-6">
             <div class="glass-card p-4 flex gap-4 shadow-sm">
-                <input type="text" id="filter-code" onkeyup="filterData()" placeholder="Search PN Number..." class="flex-grow bg-transparent p-2 outline-none text-sm font-semibold">
-                <input type="text" id="filter-id" onkeyup="filterData()" placeholder="ID..." class="w-24 bg-slate-50 border-none rounded-xl p-2 text-center text-xs font-bold outline-none text-center">
+                <input type="text" id="filter-code" onkeyup="window.filterData()" placeholder="Search PN Number..." class="flex-grow bg-transparent p-2 outline-none text-sm font-semibold">
+                <input type="text" id="filter-id" onkeyup="window.filterData()" placeholder="ID..." class="w-24 bg-slate-50 border-none rounded-xl p-2 text-center text-xs font-bold outline-none text-center">
             </div>
             <div class="glass-card p-8">
-                <h2 class="font-black text-slate-800 text-sm tech-font mb-6 flex items-center justify-between uppercase italic text-center">
+                <h2 class="font-black text-slate-800 text-sm tech-font mb-6 flex items-center justify-between uppercase italic">
                     AI Results (90-100%) <span id="count-label" class="text-[10px] font-bold bg-blue-600 text-white px-3 py-1.5 rounded-full tracking-widest">0 RECORDS</span>
                 </h2>
                 <div id="product-list" class="space-y-4 max-h-[550px] overflow-y-auto pr-2"></div>
@@ -122,7 +113,7 @@
 
     <!-- MODAL -->
     <div id="image-modal">
-        <div class="absolute top-8 right-8 cursor-pointer w-12 h-12 flex items-center justify-center bg-slate-900 text-white rounded-full z-[1100] shadow-xl hover:bg-red-500 transition-all" onclick="closeModal()">
+        <div class="absolute top-8 right-8 cursor-pointer w-12 h-12 flex items-center justify-center bg-slate-900 text-white rounded-full z-[1100] shadow-xl hover:bg-red-500 transition-all" onclick="window.closeModal()">
             <i class="fas fa-times text-xl"></i>
         </div>
         <div class="relative w-full h-full flex items-center justify-center p-10 overflow-hidden">
@@ -130,49 +121,55 @@
         </div>
     </div>
 
+    <!-- AI LOGIC MODULE -->
     <script type="module">
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbzm6mmH5It0vXdPn38Onn3ouwlawvIdwVzDXF8tSNoT6HFDGwT5_piL5Oir5JnYU08kBg/exec";
+        import { AutoModel, AutoImageProcessor, RawImage, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+        
         let inventoryData = [];
         let model, processor;
         let isScanning = false;
 
-        async function initAI() {
+        // 1. KHỞI TẠO AI (HÀM TOÀN CỤC)
+        window.initAI = async () => {
             const status = document.getElementById('sys-status');
             const loadingBox = document.getElementById('main-loading-box');
             const loadingBar = document.getElementById('main-loading-bar');
             loadingBox.style.display = 'block';
 
             try {
-                window.env.allowLocalModels = false;
-                window.env.useBrowserCache = true;
+                env.allowLocalModels = false;
+                env.useBrowserCache = true;
 
-                const progress_callback = (progress) => {
-                    if (progress.status === 'progress') {
-                        loadingBar.style.width = `${progress.percent.toFixed(0)}%`;
-                        status.innerText = `LOADING AI: ${progress.percent.toFixed(0)}%`;
+                const progress_callback = (p) => {
+                    if (p.status === 'progress') {
+                        loadingBar.style.width = `${p.percent.toFixed(0)}%`;
+                        status.innerText = `LOADING AI: ${p.percent.toFixed(0)}%`;
                     }
                 };
 
-                processor = await window.AutoImageProcessor.from_pretrained('Xenova/dinov2-small');
-                model = await window.AutoModel.from_pretrained('Xenova/dinov2-small', { 
-                    quantized: true, 
-                    progress_callback 
-                });
+                processor = await AutoImageProcessor.from_pretrained('Xenova/dinov2-small');
+                model = await AutoModel.from_pretrained('Xenova/dinov2-small', { quantized: true, progress_callback });
 
                 status.innerText = "AI ONLINE";
                 status.className = "bg-green-50 text-green-600 px-3 py-1 rounded-full font-bold text-[9px] uppercase border border-green-100 italic";
                 loadingBox.style.display = 'none';
-            } catch (e) { status.innerText = "AI ERROR"; }
-        }
+            } catch (e) { 
+                status.innerText = "AI ERROR"; 
+                console.error("AI Load Fail:", e);
+            }
+        };
 
-        async function loadData() {
+        // 2. TẢI DỮ LIỆU GOOGLE SHEETS
+        window.loadData = async () => {
+            const GAS_URL = "https://script.google.com/macros/s/AKfycbzm6mmH5It0vXdPn38Onn3ouwlawvIdwVzDXF8tSNoT6HFDGwT5_piL5Oir5JnYU08kBg/exec";
             try {
                 const response = await fetch(GAS_URL);
                 inventoryData = await response.json();
                 window.renderList(inventoryData);
-            } catch (err) { console.error("GAS Fail"); }
-        }
+            } catch (err) { console.error("GAS Load Fail"); }
+        };
 
+        // 3. QUÉT AI
         window.runTargetScan = async () => {
             if (!model || isScanning) return;
             const video = document.getElementById('video');
@@ -190,6 +187,7 @@
             const startTime = Date.now();
             holoCanvas.width = video.videoWidth; holoCanvas.height = video.videoHeight;
 
+            // Bounding Box Logic
             const tempCanvas = document.createElement('canvas');
             tempCanvas.width = 100; tempCanvas.height = 75;
             const tCtx = tempCanvas.getContext('2d');
@@ -199,8 +197,10 @@
             for (let y = 0; y < 75; y++) {
                 for (let x = 0; x < 100; x++) {
                     const i = (y * 100 + x) * 4;
-                    const b = (pixels[i] + pixels[i+1] + pixels[i+2]) / 3;
-                    if (b < 125) { if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; found = true; }
+                    if ((pixels[i] + pixels[i+1] + pixels[i+2]) / 3 < 125) { 
+                        if (x < minX) minX = x; if (x > maxX) maxX = x;
+                        if (y < minY) minY = y; if (y > maxY) maxY = y; found = true;
+                    }
                 }
             }
             const b = found ? { x: minX, y: minY, w: maxX-minX, h: maxY-minY } : { x: 30, y: 25, w: 40, h: 30 };
@@ -209,19 +209,18 @@
             const rw = (b.w / 100) * holoCanvas.width;
             const rh = (b.h / 75) * holoCanvas.height;
 
-            function animateWireframe() {
+            function animate() {
                 if (!isScanning || Date.now() - startTime > 2000) return;
                 ctx.clearRect(0, 0, holoCanvas.width, holoCanvas.height);
-                ctx.save(); ctx.beginPath(); ctx.rect(rx - 15, ry - 15, rw + 30, rh + 30); ctx.clip();
+                ctx.save(); ctx.beginPath(); ctx.rect(rx-15, ry-15, rw+30, rh+30); ctx.clip();
                 ctx.strokeStyle = '#00f2ff'; ctx.lineWidth = 1; ctx.globalAlpha = 0.5;
-                const step = 20; const shift = (Date.now() / 10) % step;
-                for(let i = rx-step; i < rx+rw+step; i+=step) { ctx.moveTo(i+shift, ry); ctx.lineTo(i+shift-10, ry+rh); }
-                for(let j = ry-step; j < ry+rh+step; j+=step) { ctx.moveTo(rx, j+shift); ctx.lineTo(rx+rw, j+shift-10); }
+                const shift = (Date.now() / 10) % 20;
+                for(let i = rx-20; i < rx+rw+20; i+=20) { ctx.moveTo(i+shift, ry); ctx.lineTo(i+shift-10, ry+rh); }
                 ctx.stroke();
-                for(let i=0; i<10; i++) { ctx.fillStyle = '#fff'; ctx.globalAlpha = 0.8; ctx.fillRect(rx + Math.random()*rw, ry + Math.random()*rh, 2.5, 2.5); }
-                ctx.restore(); requestAnimationFrame(animateWireframe);
+                for(let i=0; i<10; i++) { ctx.fillStyle = '#fff'; ctx.fillRect(rx + Math.random()*rw, ry + Math.random()*rh, 2, 2); }
+                ctx.restore(); requestAnimationFrame(animate);
             }
-            animateWireframe();
+            animate();
 
             await new Promise(r => setTimeout(r, 2000));
             isScanning = false;
@@ -230,13 +229,14 @@
             flare.style.display = 'block';
             document.getElementById('cam-container').classList.add('haptic-shake');
 
+            // AI PROCESS
             const aiCanvas = document.getElementById('canvas');
             const aiCtx = aiCanvas.getContext('2d');
             aiCtx.filter = 'contrast(1.6) grayscale(1)';
             aiCtx.drawImage(video, 0, 0, 224, 224);
             const blob = await new Promise(r => aiCanvas.toBlob(r, 'image/jpeg'));
             const url = URL.createObjectURL(blob);
-            const image = await window.RawImage.fromURL(url);
+            const image = await RawImage.fromURL(url);
             const inputs = await processor(image);
             const { last_hidden_state } = await model(inputs);
             const capturedVector = Array.from(last_hidden_state.mean(1).data);
@@ -245,12 +245,17 @@
             let results = inventoryData.map(item => {
                 if (!item.vector) return { ...item, score: 0 };
                 const dbVector = item.vector.split('|').map(Number);
-                const score = cosineSimilarity(capturedVector, dbVector);
+                let dot = 0, mA = 0, mB = 0;
+                for (let i = 0; i < capturedVector.length; i++) {
+                    dot += capturedVector[i] * dbVector[i];
+                    mA += capturedVector[i] * capturedVector[i];
+                    mB += dbVector[i] * dbVector[i];
+                }
+                const score = dot / (Math.sqrt(mA) * Math.sqrt(mB));
                 return { ...item, score: score };
             });
 
-            const filteredResults = results.filter(item => item.score >= 0.88);
-            filteredResults.sort((a, b) => b.score - a.score);
+            const filtered = results.filter(item => item.score >= 0.88).sort((a,b) => b.score - a.score);
 
             setTimeout(() => {
                 flare.style.display = 'none';
@@ -258,17 +263,10 @@
                 document.getElementById('ai-hud').style.display = 'none';
                 document.getElementById('lock-timer').style.display = 'none';
                 ctx.clearRect(0, 0, holoCanvas.width, holoCanvas.height);
-                window.renderList(filteredResults);
-                if(filteredResults.length === 0) alert("Không tìm thấy linh kiện khớp (>88%)");
+                window.renderList(filtered);
+                if(filtered.length === 0) alert("Không tìm thấy linh kiện khớp!");
             }, 600);
         };
-
-        function cosineSimilarity(vA, vB) {
-            let dot = 0, mA = 0, mB = 0;
-            const len = Math.min(vA.length, vB.length);
-            for (let i = 0; i < len; i++) { dot += vA[i] * vB[i]; mA += vA[i] * vA[i]; mB += vB[i] * vB[i]; }
-            return (mA === 0 || mB === 0) ? 0 : dot / (Math.sqrt(mA) * Math.sqrt(mB));
-        }
 
         window.renderList = (data) => {
             const listContainer = document.getElementById('product-list');
@@ -278,7 +276,7 @@
                 const matchP = item.score ? (item.score * 100).toFixed(1) : 0;
                 listContainer.innerHTML += `
                     <div class="flex items-center gap-5 p-4 bg-white border border-slate-50 rounded-[22px] hover:border-blue-400 hover:shadow-xl transition-all duration-500 group">
-                        <div class="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 cursor-zoom-in shadow-inner" onclick="openModal('${item.img}')">
+                        <div class="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 cursor-zoom-in" onclick="window.openModal('${item.img}')">
                             <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" referrerpolicy="no-referrer" onerror="this.src='https://via.placeholder.com/150?text=Error'">
                         </div>
                         <div class="flex-grow">
@@ -287,13 +285,13 @@
                         </div>
                         <div class="text-right">
                             <span class="text-[9px] text-blue-600 font-black block bg-blue-50 px-2 py-1 rounded-full mb-2 border border-blue-100 tracking-tighter">${matchP}% MATCH</span>
-                            <button onclick="openModal('${item.img}')" class="w-9 h-9 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-sm">
+                            <button onclick="window.openModal('${item.img}')" class="w-9 h-9 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-sm">
                                 <i class="fas fa-expand-alt text-xs"></i>
                             </button>
                         </div>
                     </div>`;
             });
-        }
+        };
 
         window.startCamera = async () => {
             const video = document.getElementById('video');
@@ -304,12 +302,14 @@
                 document.getElementById('laser').style.display = 'block';
                 document.getElementById('sys-status').innerText = "RADAR ACTIVE";
             } catch (err) { alert("Hãy cấp quyền Cam!"); }
-        }
+        };
 
-        window.openModal = (src) => { document.getElementById('zoom-img').src = src; document.getElementById('image-modal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-        window.closeModal = () => { document.getElementById('image-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        window.openModal = (src) => { document.getElementById('zoom-img').src = src; document.getElementById('image-modal').style.display = 'flex'; document.body.style.overflow = 'hidden'; };
+        window.closeModal = () => { document.getElementById('image-modal').style.display = 'none'; document.body.style.overflow = 'auto'; };
 
-        initAI(); loadData();
+        // CHẠY KHỞI TẠO
+        window.initAI();
+        window.loadData();
     </script>
 </body>
 </html>
