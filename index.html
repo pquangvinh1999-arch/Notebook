@@ -5,82 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#98ddca">
     <title>Sổ Tay Của Vợ ✨</title>
-    
-    <!-- Kết nối file Manifest PWA -->
     <link rel="manifest" href="./manifest.json">
-    
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-    
     <style>
         :root { --mint-dark: #76c8b1; --mint-main: #98ddca; --mint-light: #d5ecc2; --pink-cute: #ffb7b2; --text-color: #555; --bg-color: #f7fbf9; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); display: flex; justify-content: center; min-height: 100vh; padding: 20px; }
-        .app-container { background: white; width: 100%; max-width: 400px; border-radius: 30px; box-shadow: 0 10px 25px rgba(152, 221, 202, 0.3); padding: 25px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .app-container { background: white; width: 100%; max-width: 400px; border-radius: 30px; box-shadow: 0 10px 25px rgba(152, 221, 202, 0.3); padding: 25px; display: flex; flex-direction: column; position: relative; }
         h2 { text-align: center; color: var(--mint-dark); font-size: 24px; margin-bottom: 20px; }
-        .mic-container { display: flex; justify-content: center; margin-bottom: 20px; }
-        .btn-mic { background: var(--pink-cute); border: none; width: 80px; height: 80px; border-radius: 50%; font-size: 35px; box-shadow: 0 8px 15px rgba(255, 183, 178, 0.4); cursor: pointer; transition: transform 0.2s; }
-        .btn-mic:active { transform: scale(0.9); }
+        .mic-container { display: flex; justify-content: center; margin-bottom: 10px; }
+        .btn-mic { background: var(--pink-cute); border: none; width: 80px; height: 80px; border-radius: 50%; font-size: 35px; box-shadow: 0 8px 15px rgba(255, 183, 178, 0.4); cursor: pointer; }
         .listening { animation: pulse 1s infinite alternate; background: #ff9a93; }
-        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 183, 178, 0.7); } 100% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(255, 183, 178, 0); } }
+        @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
         .input-group { margin-bottom: 15px; }
         .input-group label { font-size: 14px; font-weight: bold; color: var(--mint-dark); display: block; margin-bottom: 5px; }
-        input[type="text"], input[type="time"] { width: 100%; padding: 15px; border: 2px solid var(--mint-light); border-radius: 15px; font-size: 16px; outline: none; background: #fdfdfd; transition: border 0.3s; }
-        input:focus { border-color: var(--mint-main); }
-        .btn-save { background: var(--mint-main); color: white; border: none; padding: 15px; width: 100%; border-radius: 15px; font-size: 18px; font-weight: bold; box-shadow: 0 5px 15px rgba(152, 221, 202, 0.4); cursor: pointer; margin-top: 5px; transition: all 0.3s; }
-        .btn-save:active { transform: translateY(3px); box-shadow: none; }
-        .task-list-title { margin-top: 30px; margin-bottom: 15px; font-size: 18px; color: var(--mint-dark); display: flex; align-items: center; gap: 5px; }
+        input { width: 100%; padding: 15px; border: 2px solid var(--mint-light); border-radius: 15px; font-size: 16px; outline: none; }
+        .btn-save { background: var(--mint-main); color: white; border: none; padding: 15px; width: 100%; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+        .btn-test { background: #eee; color: #666; border: 1px solid #ccc; padding: 8px; width: 100%; border-radius: 10px; font-size: 13px; cursor: pointer; margin-bottom: 20px; }
+        .task-list-title { margin-top: 20px; margin-bottom: 10px; font-size: 18px; color: var(--mint-dark); }
         ul { list-style: none; }
-        li { background: var(--mint-light); margin-bottom: 15px; padding: 15px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        .task-content { display: flex; flex-direction: column; gap: 5px; width: 80%; }
-        .task-text { font-weight: bold; font-size: 16px; }
-        .task-time { font-size: 13px; color: var(--mint-dark); font-weight: bold;}
-        .status-badge { font-size: 11px; padding: 2px 6px; border-radius: 10px; background: white; color: var(--mint-dark); margin-left: 5px;}
-        .btn-delete { background: white; color: var(--pink-cute); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 16px; cursor: pointer; }
-        .status-text { text-align: center; font-size: 12px; color: var(--pink-cute); margin-top: -10px; margin-bottom: 15px; height: 15px; }
-        
-        .wake-lock-btn { margin-top: 20px; background: #f1f2f6; color: #a4b0be; padding: 10px; text-align: center; border-radius: 15px; font-size: 13px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        li { background: var(--mint-light); margin-bottom: 10px; padding: 15px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { font-size: 11px; padding: 2px 6px; border-radius: 10px; background: white; color: var(--mint-dark); }
+        .btn-delete { background: white; color: var(--pink-cute); border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+        .wake-lock-btn { margin-top: 20px; background: #f1f2f6; color: #a4b0be; padding: 10px; text-align: center; border-radius: 15px; font-size: 13px; cursor: pointer; }
         .wake-lock-btn.active { background: #ffeaa7; color: #d63031; }
-        
-        .battery-saver-btn { margin-top: 10px; background: #2f3640; color: white; padding: 10px; text-align: center; border-radius: 15px; font-size: 13px; font-weight: bold; cursor: pointer; }
-        
-        #blackScreen {
-            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #000000;
-            z-index: 9999; flex-direction: column; justify-content: center; align-items: center; color: #333;
-        }
+        .battery-saver-btn { margin-top: 10px; background: #2f3640; color: white; padding: 10px; text-align: center; border-radius: 15px; font-size: 13px; cursor: pointer; }
+        #blackScreen { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9999; justify-content: center; align-items: center; color: #333; flex-direction: column; }
         #blackScreen.active { display: flex; }
-        .black-screen-text { font-size: 12px; opacity: 0.5; margin-top: 20px; }
+        .status-text { text-align: center; font-size: 12px; color: var(--pink-cute); margin-bottom: 10px; height: 15px; }
     </style>
 </head>
 <body>
 
 <div id="blackScreen">
-    <div style="font-size: 40px; color: #555;">⏳</div>
-    <div class="black-screen-text">Chạm 2 lần để bật lại màn hình</div>
+    <div style="font-size: 40px;">⏳</div>
+    <div style="color: #555; font-size: 12px; margin-top: 20px;">Chạm 2 lần để bật màn hình</div>
 </div>
 
 <div class="app-container">
-    <h2>🌸 Sổ Tay Chồng làm 🌸</h2>
+    <h2>🌸 Sổ Tay Chồng Làm 🌸</h2>
     
     <div class="mic-container"><button id="btnMic" class="btn-mic">🎙️</button></div>
-    <div id="micStatus" class="status-text">Chạm vào mic để nói việc cần làm! ✨</div>
+    <div id="micStatus" class="status-text">Chạm vào mic để nói!</div>
     
     <div class="input-group">
-        <label>📝 Việc cần làm là gì nè?</label>
-        <input type="text" id="taskInput" placeholder="VD: Móc sợi, họp team...">
+        <label>📝 Việc cần làm:</label>
+        <input type="text" id="taskInput" placeholder="Ví dụ: Móc sợi...">
     </div>
     <div class="input-group">
-        <label>⏰ Nhắc đúng giờ nào?</label>
+        <label>⏰ Giờ nhắc:</label>
         <input type="time" id="timeInput">
     </div>
     
-    <button id="btnSave" class="btn-save">Lưu Lại Đi! 💕</button>
+    <button id="btnSave" class="btn-save">Lưu Lại 💕</button>
+    <button id="btnTest" class="btn-test">🔊 Thử tiếng (Test Loa)</button>
 
-    <div class="task-list-title">✨ Danh sách của vợ:</div>
+    <div class="task-list-title">✨ Danh sách:</div>
     <ul id="taskList"></ul>
 
-    <div id="wakeLockBtn" class="wake-lock-btn">🌙 Chạm để bật chống tắt màn hình</div>
-    <div id="batteryBtn" class="battery-saver-btn" style="display:none;">🔋 Kích hoạt Tối Ưu Pin (Màn hình đen)</div>
+    <div id="wakeLockBtn" class="wake-lock-btn">🌙 Bật chống tắt màn hình</div>
+    <div id="batteryBtn" class="battery-saver-btn" style="display:none;">🔋 Tối ưu pin (Màn hình đen)</div>
 </div>
 
 <script>
@@ -93,35 +77,33 @@
     const wakeLockBtn = document.getElementById('wakeLockBtn');
     const batteryBtn = document.getElementById('batteryBtn');
     const blackScreen = document.getElementById('blackScreen');
+    const btnTest = document.getElementById('btnTest');
     
     let tasks = JSON.parse(localStorage.getItem('cuteTasksV2')) || [];
     let isInitSpeech = false;
 
-    // --- KHỞI TẠO PWA OFFLINE ---
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('PWA Offline sẵn sàng!'))
-            .catch(err => console.log('Lỗi PWA:', err));
-        });
-    }
-
-    // --- MỞ KHÓA LOA (Cho Android & iOS) ---
+    // --- MỞ KHÓA LOA TRIỆT ĐỂ ---
     function unlockAudio() {
         if (!isInitSpeech) {
             window.speechSynthesis.cancel();
-            let unlockUtterance = new SpeechSynthesisUtterance("");
-            unlockUtterance.volume = 0;
-            window.speechSynthesis.speak(unlockUtterance);
+            let u = new SpeechSynthesisUtterance("");
+            u.volume = 0;
+            window.speechSynthesis.speak(u);
             isInitSpeech = true;
+            console.log("Audio Unlocked");
         }
     }
-    document.body.addEventListener('click', unlockAudio, { once: true });
-    document.body.addEventListener('touchstart', unlockAudio, { once: true });
+    document.body.addEventListener('click', unlockAudio);
+    document.body.addEventListener('touchstart', unlockAudio);
+
+    // Nút Test loa
+    btnTest.addEventListener('click', () => {
+        speak("Loa hoạt động tốt rồi anh nhé!");
+    });
 
     renderTasks();
 
-    // --- Giữ sáng & Tối ưu pin ---
+    // --- Wake Lock ---
     let wakeLock = null;
     async function requestWakeLock() {
         try {
@@ -129,26 +111,23 @@
                 wakeLock = await navigator.wakeLock.request('screen');
                 wakeLockBtn.classList.add('active');
                 wakeLockBtn.innerHTML = "☀️ Đang chống tắt màn hình";
-                batteryBtn.style.display = "block"; 
-                
+                batteryBtn.style.display = "block";
                 wakeLock.addEventListener('release', () => {
                     wakeLockBtn.classList.remove('active');
-                    wakeLockBtn.innerHTML = "🌙 Chạm để bật chống tắt màn hình";
+                    wakeLockBtn.innerHTML = "🌙 Bật chống tắt màn hình";
                     batteryBtn.style.display = "none";
                 });
             }
         } catch (err) {}
     }
-
-    wakeLockBtn.addEventListener('click', () => { 
-        if (!wakeLock) requestWakeLock(); 
-        else wakeLock.release().then(() => wakeLock = null); 
+    wakeLockBtn.addEventListener('click', () => {
+        if (!wakeLock) requestWakeLock();
+        else wakeLock.release().then(() => wakeLock = null);
     });
+    batteryBtn.addEventListener('click', () => blackScreen.classList.add('active'));
+    blackScreen.addEventListener('dblclick', () => blackScreen.classList.remove('active'));
 
-    batteryBtn.addEventListener('click', () => { blackScreen.classList.add('active'); });
-    blackScreen.addEventListener('dblclick', () => { blackScreen.classList.remove('active'); });
-
-    // --- Giọng nói sang văn bản ---
+    // --- Mic ---
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
@@ -156,22 +135,22 @@
         btnMic.addEventListener('click', () => {
             recognition.start();
             btnMic.classList.add('listening');
-            micStatus.textContent = "Anh đang nghe đây... 👂";
+            micStatus.textContent = "Anh đang nghe... 👂";
         });
         recognition.onresult = (event) => {
             taskInput.value = event.results[0][0].transcript;
             btnMic.classList.remove('listening');
-            micStatus.textContent = "Nghe xong rồi! Chọn giờ đi nào 🥰";
+            micStatus.textContent = "Xong rồi! Chọn giờ nhé 🥰";
         };
         recognition.onerror = () => {
             btnMic.classList.remove('listening');
-            micStatus.textContent = "Không nghe rõ, thử lại nha!";
+            micStatus.textContent = "Thử lại nha!";
         }
     }
 
-    // --- Lưu công việc ---
+    // --- Save ---
     btnSave.addEventListener('click', () => {
-        if (!taskInput.value || !timeInput.value) return alert("Vợ quên nhập việc hoặc giờ rồi kìa! 🥺");
+        if (!taskInput.value || !timeInput.value) return alert("Nhập đủ thông tin nhé! 🥺");
         tasks.push({ id: Date.now(), text: taskInput.value, time: timeInput.value, reminded10: false, reminded5: false, remindedExact: false });
         saveTasks(); renderTasks();
         taskInput.value = ''; timeInput.value = '';
@@ -181,63 +160,65 @@
         taskList.innerHTML = '';
         tasks.sort((a, b) => a.time.localeCompare(b.time)); 
         tasks.forEach(task => {
-            let statusHtml = '<span class="status-badge">⏰ Chờ nhắc...</span>';
-            if (task.remindedExact) statusHtml = '<span class="status-badge" style="color: green;">✔️ Xong</span>';
-            else if (task.reminded5) statusHtml = '<span class="status-badge" style="color: orange;">⏳ Đã nhắc 5p</span>';
-            else if (task.reminded10) statusHtml = '<span class="status-badge" style="color: #ff9a93;">⏳ Đã nhắc 10p</span>';
+            let status = '<span class="status-badge">⏰ Chờ</span>';
+            if (task.remindedExact) status = '<span class="status-badge" style="color:green">✔️ Xong</span>';
+            else if (task.reminded5) status = '<span class="status-badge" style="color:orange">⏳ 5p</span>';
+            else if (task.reminded10) status = '<span class="status-badge" style="color:red">⏳ 10p</span>';
 
             const li = document.createElement('li');
-            li.innerHTML = `<div class="task-content"><span class="task-text">${task.text}</span><span class="task-time">🕒 ${task.time} ${statusHtml}</span></div><button class="btn-delete" onclick="deleteTask(${task.id})">❌</button>`;
+            li.innerHTML = `<div class="task-content"><span class="task-text">${task.text}</span><span class="task-time">🕒 ${task.time} ${status}</span></div><button class="btn-delete" onclick="deleteTask(${task.id})">❌</button>`;
             taskList.appendChild(li);
         });
     }
 
-    window.deleteTask = (id) => { tasks = tasks.filter(task => task.id !== id); saveTasks(); renderTasks(); }
+    window.deleteTask = (id) => { tasks = tasks.filter(t => t.id !== id); saveTasks(); renderTasks(); }
     function saveTasks() { localStorage.setItem('cuteTasksV2', JSON.stringify(tasks)); }
 
-    // --- Đọc Text to Speech (Sửa lỗi Android) ---
     function speak(text) {
-        window.speechSynthesis.cancel(); 
+        window.speechSynthesis.cancel();
         setTimeout(() => {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'vi-VN'; 
-            utterance.rate = 1.0; 
-            utterance.pitch = 1.2;
-            window.speechSynthesis.speak(utterance);
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'vi-VN'; u.rate = 1.0; u.pitch = 1.2;
+            window.speechSynthesis.speak(u);
         }, 100);
     }
 
-    function getMinusTime(timeString, minutesToSubtract) {
-        const [hours, minutes] = timeString.split(':');
-        const d = new Date(); d.setHours(parseInt(hours), parseInt(minutes), 0, 0); d.setMinutes(d.getMinutes() - minutesToSubtract);
+    function getMinusTime(timeString, minutes) {
+        const [h, m] = timeString.split(':');
+        const d = new Date(); d.setHours(parseInt(h), parseInt(m), 0, 0);
+        d.setMinutes(d.getMinutes() - minutes);
         return d.toTimeString().slice(0, 5);
     }
 
-    // --- VÒNG LẶP KIỂM TRA GIỜ ---
     setInterval(() => {
-        const now = new Date();
-        const currentTime = now.toTimeString().slice(0, 5);
-
+        const now = new Date().toTimeString().slice(0, 5);
         tasks.forEach(task => {
-            const time10MinBefore = getMinusTime(task.time, 10);
-            const time5MinBefore = getMinusTime(task.time, 5);
+            const t10 = getMinusTime(task.time, 10);
+            const t5 = getMinusTime(task.time, 5);
 
-            if (currentTime === time10MinBefore && !task.reminded10) {
-                speak(`Còn 10 phút nữa để chuẩn bị cho công việc: ${task.text}`);
+            if (now === t10 && !task.reminded10) {
+                speak(`Còn 10 phút nữa: ${task.text}`);
                 task.reminded10 = true; saveTasks(); renderTasks();
             }
-            if (currentTime === time5MinBefore && !task.reminded5) {
-                speak(`Còn 5 phút nữa để chuẩn bị cho công việc: ${task.text}`);
+            if (now === t5 && !task.reminded5) {
+                speak(`Còn 5 phút nữa: ${task.text}`);
                 task.reminded5 = true; saveTasks(); renderTasks();
             }
-            if (currentTime === task.time && !task.remindedExact) {
-                speak(`Đã đến giờ: ${task.text}. Vợ làm việc tốt nè!`);
-                alert(`⏰ Đã đến giờ: ${task.text}`);
+            if (now === task.time && !task.remindedExact) {
+                speak(`Đã đến giờ: ${task.text}. Vợ làm việc tốt nhé!`);
+                alert(`⏰ Đến giờ: ${task.text}`);
                 if(blackScreen.classList.contains('active')) blackScreen.classList.remove('active');
                 task.remindedExact = true; saveTasks(); renderTasks();
             }
         });
     }, 1000);
+
+    // PWA Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+        });
+    }
 </script>
 </body>
 </html>
