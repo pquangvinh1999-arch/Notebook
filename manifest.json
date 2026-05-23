@@ -1,0 +1,16 @@
+{
+  "name": "Sổ Tay Của Vợ ✨",
+  "short_name": "Sổ Tay Vợ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7fbf9",
+  "theme_color": "#98ddca",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3237/3237472.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
